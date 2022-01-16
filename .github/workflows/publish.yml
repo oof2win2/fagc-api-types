@@ -1,0 +1,31 @@
+name: "Publish"
+
+# TODO: make the action on dispatch only
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       bump_type:
+#         description: "Bump type"
+#         required: true
+#         default: "patch"
+on: push
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    name: 'Setup Node.js environment'
+    description: 'Publish a new version of the package, incrementing the version number according to input and'
+    inputs:
+      bump:
+        description: 'Bump version number type'
+        default: 'patch'
+        type: 'string'
+    steps:
+      - uses: actions/checkout@v2
+      - name: 'Setup Node.js environment'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.9.1'
+      - name: 'Publish'
+        run: |
+          node publish.js
